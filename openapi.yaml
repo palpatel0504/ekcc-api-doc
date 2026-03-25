@@ -1,9 +1,99 @@
 openapi: 3.0.1
 info:
-  title: Auth Microservice API
+  title: EKCC Auth Microservice API
+  version: 1.0.0
+
+x-tagGroups:
+  - name: "Getting Started"
+    tags:
+      - Introduction
+  - name: "API Controllers"
+    tags:
+      - user-controller
+      - associate-agent-controller
+      - authentication-controller
+      - user-consent-controller
+      - register-login-controller
+      - agent-kiosk-controller
+      - epacs-member-controller
+      - bpp-controller
+      - agent-bank-controller
+      - aadhar-authentication-kyc-controller
+
 servers:
-  - url: http://auth-service:8086
-    description: Generated server url
+  - url: https://ekcc.nabard.org/
+    description: EKCC Auth Service
+
+tags:
+  - name: Introduction
+    x-traitTag: true
+    description: |
+      # EKCC Auth Microservice API
+
+      Welcome to the **EKCC Auth Microservice API** documentation.
+      This API provides secure authentication and user management for the EKCC platform.
+
+      ## What is EKCC?
+
+      EKCC is a platform designed to connect farmers, agents, and financial institutions
+      to streamline credit and banking services for agricultural communities across India.
+
+      ## Base URL
+
+      `https://ekcc.nabard.org/`
+
+      ## Overview
+
+      This microservice handles:
+      - Farmer registration, KYC and Aadhar verification
+      - Agent and associate agent onboarding
+      - User login, logout and JWT token management
+      - Role and permission management
+      - Consent management for data sharing
+      - Bank account linking for farmers and agents
+      - EPACS member management
+
+      ## Authentication
+
+      Most endpoints require a valid JWT Bearer token in the request header:
+
+      `Authorization: Bearer <your_jwt_token>`
+
+      Obtain your token by calling the login endpoint under `register-login-controller`.
+
+      ## Request Format
+
+      All API requests must include these headers:
+
+      `Content-Type: application/json`
+
+      `Accept-Language: en`
+
+      ## Support
+
+      For API access or integration support, contact the EKCC platform team.
+
+  - name: user-controller
+    description: Operations related to user management on the EKCC platform.
+  - name: associate-agent-controller
+    description: Operations related to associate agent onboarding and management.
+  - name: authentication-controller
+    description: Handles login, logout and JWT token operations for EKCC users.
+  - name: user-consent-controller
+    description: Manages user consent records for data sharing on EKCC.
+  - name: register-login-controller
+    description: Handles user registration and login flows for the EKCC platform.
+  - name: agent-kiosk-controller
+    description: Operations for kiosk agent management under EKCC.
+  - name: epacs-member-controller
+    description: EPACS member management operations for cooperative societies.
+  - name: bpp-controller
+    description: BPP (Business Process Partner) related operations on EKCC.
+  - name: agent-bank-controller
+    description: Agent bank account linking and management for EKCC agents.
+  - name: aadhar-authentication-kyc-controller
+    description: Aadhar based authentication and KYC verification for farmers on EKCC.
+
 paths:
   /api/auth/user/update_status:
     put:
