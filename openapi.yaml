@@ -20,7 +20,7 @@ paths:
           description: Unique ID of the user whose status needs to be updated
           schema:
             type: integer
-            format: int64
+            format: int64#
         - name: active
           in: query
           required: true
@@ -1807,7 +1807,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageString"
-      description: "Uploads files to the server on behalf of the specified associate
+      description:
+        "Uploads files to the server on behalf of the specified associate
         agent."
   /api/auth/kiosk/save/operation_area:
     post:
@@ -2178,7 +2179,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "Retrieves a list of all members associated with the specified
+      description:
+        "Retrieves a list of all members associated with the specified
         PACS."
   /api/auth/epacs/get_all_member_details:
     post:
@@ -2353,7 +2355,8 @@ paths:
               type: object
               additionalProperties:
                 type: object
-      description: "Encrypts and returns all EKCC (Encrypted Key-Credential Combination)
+      description:
+        "Encrypts and returns all EKCC (Encrypted Key-Credential Combination)
         credentials."
   /api/auth/beckn/encrypt:
     post:
@@ -2795,7 +2798,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageListAgentDetailsResponceDto"
-      description: "Retrieves a list of all associated applications for the authenticated
+      description:
+        "Retrieves a list of all associated applications for the authenticated
         user."
   /api/auth/associate/company_logo:
     post:
@@ -2914,8 +2918,7 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageAssociateAgent"
-      description:
-        "Retrieves the agent details for the specified user ID."
+      description: "Retrieves the agent details for the specified user ID."
   /api/auth/associate/agent_detail/{id}:
     post:
       tags:
@@ -3205,7 +3208,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageJointApplicant"
-      description: "Performs a bio-metric KYC (Know Your Customer) verification for
+      description:
+        "Performs a bio-metric KYC (Know Your Customer) verification for
         a joint applicant."
   /api/auth/aadhar/v1/get_refrence:
     post:
@@ -3295,7 +3299,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageString"
-      description: "Expires the Aadhaar-based KYC (Know Your Customer) verification for
+      description:
+        "Expires the Aadhaar-based KYC (Know Your Customer) verification for
         a user."
   /api/auth/aadhar/v1/check_name_as_pr_aadhar:
     post:
@@ -3325,7 +3330,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageString"
-      description: "Verifies if the provided name matches the name associated with
+      description:
+        "Verifies if the provided name matches the name associated with
         the given Aadhar number."
   /api/auth/aadhar/v1/bio:
     post:
@@ -3361,7 +3367,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageKycBioDto"
-      description: "Retrieves the biographical information associated with an Aadhaar
+      description:
+        "Retrieves the biographical information associated with an Aadhaar
         number."
   /api/auth/aadhar/v1/bio/kyc:
     post:
@@ -3482,7 +3489,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageAssociateAgent"
-      description: "Performs biometric KYC (Know Your Customer) for associating an agent
+      description:
+        "Performs biometric KYC (Know Your Customer) for associating an agent
         with an Aadhaar account."
   /api/auth/aadhar/kyc_for_member:
     post:
@@ -4340,7 +4348,8 @@ paths:
           content:
             schema:
               $ref: "#/components/schemas/ResponseMessageAadharKyc"
-      description: "Retrieves the KYC (Know Your Customer) details for a member based
+      description:
+        "Retrieves the KYC (Know Your Customer) details for a member based
         on their member ID."
   /api/auth/aadhar/full_details/{id}:
     get:
