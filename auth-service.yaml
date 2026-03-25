@@ -1,164 +1,64 @@
 openapi: 3.0.1
 info:
-  title: EKCC Auth Microservice API
-  version: 1.0.0
-
-x-tagGroups:
-  - name: "Getting Started"
-    tags:
-      - Introduction
-  - name: "API Controllers"
-    tags:
-      - user-controller
-      - associate-agent-controller
-      - authentication-controller
-      - user-consent-controller
-      - register-login-controller
-      - agent-kiosk-controller
-      - epacs-member-controller
-      - bpp-controller
-      - agent-bank-controller
-      - aadhar-authentication-kyc-controller
-
+  title: Auth Microservice API
 servers:
-  - url: https://ekcc.nabard.org/
-    description: EKCC Auth Service
-
-tags:
-  - name: Introduction
-    x-traitTag: true
-    description: |
-      # EKCC Auth Microservice API
-
-      Welcome to the **EKCC Auth Microservice API** documentation.
-      This API provides secure authentication and user management for the EKCC platform.
-
-      ## What is EKCC?
-
-      EKCC is a platform designed to connect farmers, agents, and financial institutions
-      to streamline credit and banking services for agricultural communities across India.
-
-      ## Base URL
-
-      `https://ekcc.nabard.org/`
-
-      ## Overview
-
-      This microservice handles:
-      - Farmer registration, KYC and Aadhar verification
-      - Agent and associate agent onboarding
-      - User login, logout and JWT token management
-      - Role and permission management
-      - Consent management for data sharing
-      - Bank account linking for farmers and agents
-      - EPACS member management
-
-      ## Authentication
-
-      Most endpoints require a valid JWT Bearer token in the request header:
-
-      `Authorization: Bearer <your_jwt_token>`
-
-      Obtain your token by calling the login endpoint under `register-login-controller`.
-
-      ## Request Format
-
-      All API requests must include these headers:
-
-      `Content-Type: application/json`
-
-      `Accept-Language: en`
-
-      ## Support
-
-      For API access or integration support, contact the EKCC platform team.
-
-  - name: user-controller
-    description: Operations related to user management on the EKCC platform.
-  - name: associate-agent-controller
-    description: Operations related to associate agent onboarding and management.
-  - name: authentication-controller
-    description: Handles login, logout and JWT token operations for EKCC users.
-  - name: user-consent-controller
-    description: Manages user consent records for data sharing on EKCC.
-  - name: register-login-controller
-    description: Handles user registration and login flows for the EKCC platform.
-  - name: agent-kiosk-controller
-    description: Operations for kiosk agent management under EKCC.
-  - name: epacs-member-controller
-    description: EPACS member management operations for cooperative societies.
-  - name: bpp-controller
-    description: BPP (Business Process Partner) related operations on EKCC.
-  - name: agent-bank-controller
-    description: Agent bank account linking and management for EKCC agents.
-  - name: aadhar-authentication-kyc-controller
-    description: Aadhar based authentication and KYC verification for farmers on EKCC.
-
+  - url: http://auth-service:8086
+    description: Generated server url
 paths:
   /api/auth/user/update_status:
     put:
       tags:
         - user-controller
-      description:
-        Activates or deactivates a user account by their unique user ID.
-        Pass active=true to activate and active=false to deactivate the account.
       operationId: updateUserStatus
       parameters:
         - name: userId
           in: query
           required: true
-          description: Unique ID of the user whose status needs to be updated
           schema:
             type: integer
-            format: int64#
+            format: int64
         - name: active
           in: query
           required: true
-          description: Set true to activate the user, false to deactivate
           schema:
             type: boolean
         - name: Accept-Language
           in: header
           required: false
-          description: Language preference for the response. Default is English
           schema:
             type: string
             default: en
       responses:
-        200:
-          description: User status updated successfully
+        '200':
+          description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/user/farmer_status:
     put:
       tags:
         - user-controller
-      summary: Update Farmer Status
-      description:
-        Updates the farmer verification status for a specific user. Used
-        to mark a user as a verified farmer or revoke farmer status.
       operationId: farmerStatus
       parameters:
         - name: userId
           in: query
           required: true
-          description: Unique ID of the user whose farmer status needs to be updated
           schema:
             type: integer
             format: int64
         - name: status
           in: query
           required: true
-          description: Set true to grant farmer status, false to revoke it
           schema:
             type: boolean
       responses:
-        200:
-          description: Farmer status updated successfully
+        '200':
+          description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/ch_mob_num_by_aadhar:
     put:
       tags:
@@ -175,15 +75,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description: Updates the mobile number associated with a user's Aadhar number.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/user/ch_fm_mob_num_by_aadhar:
     put:
       tags:
@@ -200,15 +100,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description: "Updates the user's mobile number in the system based on their Aadhaar number."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/associate/update_user:
     put:
       tags:
@@ -231,15 +131,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AssociateAgentUserDto"
+              $ref: '#/components/schemas/AssociateAgentUserDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: Updates a user's information in the system.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/verify_otp_farmer_register:
     post:
       tags:
@@ -256,17 +156,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description:
-        Verifies the One-Time Password (OTP) provided by a farmer during
-        the registration process.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/verify_otp_adhar_delete:
     post:
       tags:
@@ -283,17 +181,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description:
-        This endpoint is used to verify a one-time password (OTP) and delete
-        a user's Aadhaar information.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/verify_mobile_otp:
     post:
       tags:
@@ -310,15 +206,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description: Verifies a mobile OTP (One-Time Password) for user authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/verify_email_otp:
     post:
       tags:
@@ -335,15 +231,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description: Verifies the email OTP (One-Time Password) for user authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/verify:
     post:
       tags:
@@ -365,17 +261,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description:
-        Verifies user authentication credentials and returns a session
-        token.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/user_consent/all:
     post:
       tags:
@@ -423,16 +317,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "**Endpoint:** /api/auth/user_consent/all
-
-        **Method:** POST
-
-        **Summary:** Retrieves a list of all user consent records."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/user/upload_user:
     post:
       tags:
@@ -458,12 +348,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Uploads a user profile image."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/update_user_permission:
     post:
       tags:
@@ -480,15 +370,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PermissionDto"
+              $ref: '#/components/schemas/PermissionDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Updates the permissions of a user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/update_user_default_role:
     post:
       tags:
@@ -517,12 +407,12 @@ paths:
                 format: int64
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: Updates the default role for a user in the system.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/update_uploaded_user:
     post:
       tags:
@@ -548,14 +438,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        This endpoint allows authenticated users to update their uploaded
-        user information.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/update_nabard_user:
     post:
       tags:
@@ -582,15 +470,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserUpdateDto"
+              $ref: '#/components/schemas/UserUpdateDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Updates a NABARD user's information."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/update_bank_user_with_otp_password:
     post:
       tags:
@@ -607,17 +495,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserUpdateWithOtpPasswordDto"
+              $ref: '#/components/schemas/UserUpdateWithOtpPasswordDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageUserDetailResponsePayload"
-      description:
-        Updates a user's bank account details with a one-time password
-        (OTP) for authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageUserDetailResponsePayload'
   /api/auth/user/update_bank_user:
     post:
       tags:
@@ -644,15 +530,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserUpdateDto"
+              $ref: '#/components/schemas/UserUpdateDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Updates the bank user information for the authenticated user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/save_user_permission:
     post:
       tags:
@@ -669,17 +555,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserPermissionPayload"
+              $ref: '#/components/schemas/UserPermissionPayload'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        This endpoint allows for the creation or update of a user's permissions.
-        It accepts a JSON payload with the user's details and their associated permissions.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/register_user:
     post:
       tags:
@@ -696,15 +580,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRegisterDto"
+              $ref: '#/components/schemas/UserRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Registers a new user in the system."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/register_incomplete_farmer:
     post:
       tags:
@@ -721,17 +605,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description:
-        Registers a new incomplete farmer user. Requires email, password,
-        and other user information.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/user/register_farmer_by_fm_by_aadhar:
     post:
       tags:
@@ -748,17 +630,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description:
-        This endpoint allows a farmer management (FM) to register a new
-        farmer by providing the farmer's Aadhar information.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/user/register_farmer:
     post:
       tags:
@@ -775,15 +655,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description: Creates a new farmer account.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/user/register_associate:
     post:
       tags:
@@ -800,15 +680,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RegisterAssociateDto"
+              $ref: '#/components/schemas/RegisterAssociateDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: " Register a new user associate."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/reg_farmer:
     post:
       tags:
@@ -825,15 +705,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRegisterDto"
+              $ref: '#/components/schemas/UserRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: Registers a new farmer user in the system.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/get_otp_by_mobileNo:
     post:
       tags:
@@ -856,17 +736,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListOtp"
-      description:
-        Retrieves a one-time password (OTP) for user authentication based
-        on the provided mobile number.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListOtp'
   /api/auth/user/get_all_nabard_user:
     post:
       tags:
@@ -926,12 +804,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "Retrieves a list of all NABARD users."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/user/get_all_cdac_audit_details:
     post:
       tags:
@@ -979,12 +857,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "Retrieves all CDAC audit details for the authenticated user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/user/get_all_bank_user:
     post:
       tags:
@@ -1044,12 +922,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "Retrieves a list of all bank users."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/user/get_all_admin:
     post:
       tags:
@@ -1097,12 +975,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "Retrieves a list of all administrative users."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/user/generate_user_details_report:
     post:
       tags:
@@ -1116,13 +994,13 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: string
-              format: binary
-      description: Generates a user details report for the authenticated user.
+            '*/*':
+              schema:
+                type: string
+                format: binary
   /api/auth/user/generate_farmer_details_report:
     post:
       tags:
@@ -1136,13 +1014,13 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: string
-              format: binary
-      description: "Generates a detailed report for a farmer's account."
+            '*/*':
+              schema:
+                type: string
+                format: binary
   /api/auth/user/generate_associate_details_report:
     post:
       tags:
@@ -1156,13 +1034,13 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: string
-              format: binary
-      description: Generates an associate details report for the authenticated user.
+            '*/*':
+              schema:
+                type: string
+                format: binary
   /api/auth/user/delete_duplicate_otp:
     post:
       tags:
@@ -1187,12 +1065,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description: Deletes a user's duplicate one-time password (OTP) entries.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/user/create_admin:
     post:
       tags:
@@ -1209,15 +1087,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateAdminPayload"
+              $ref: '#/components/schemas/CreateAdminPayload'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Creates a new administrative user account."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/change_password:
     post:
       tags:
@@ -1234,15 +1112,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Allows authenticated users to change their password."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/add_user/{entityLevelId}:
     post:
       tags:
@@ -1275,17 +1153,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageUser"
-      description:
-        This endpoint allows you to add a new user to the system. The `entityLevelId`
-        parameter specifies the level of the entity the user belongs to.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageUser'
   /api/auth/user/add_nabard_user/{nabardLevelId}:
     post:
       tags:
@@ -1318,18 +1194,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageUser"
-      description:
-        This endpoint allows you to add a new NABARD user to the system.
-        The `nabardLevelId` parameter specifies the NABARD level of the user being
-        added.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageUser'
   /api/auth/update_email_from_csv:
     post:
       tags:
@@ -1354,12 +1227,12 @@ paths:
                   type: string
                   format: binary
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageUpdateEmailCsvResponse"
-      description: "Update user email addresses from a CSV file."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageUpdateEmailCsvResponse'
   /api/auth/transfer_user:
     post:
       tags:
@@ -1376,19 +1249,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Endpoint: `/api/auth/transfer_user`
-
-        Method: `POST`
-
-        Summary: Transfer user data to a new account."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/send_otp_to_mobile:
     post:
       tags:
@@ -1405,16 +1274,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description: "Sends a one-time password (OTP) to the user's mobile number
-        for authentication."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/send_otp_change_pass:
     post:
       tags:
@@ -1431,17 +1299,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description:
-        This endpoint allows users to request an OTP (One-Time Password)
-        for changing their password.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/send_otp_by_member_id:
     post:
       tags:
@@ -1458,17 +1324,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description:
-        Sends a one-time password (OTP) to the user's registered contact
-        information based on the provided member ID.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/send_otp_Authentication:
     post:
       tags:
@@ -1485,17 +1349,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description:
-        Sends a one-time password (OTP) to the user's registered phone
-        number for authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/send_otp:
     post:
       tags:
@@ -1512,17 +1374,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description:
-        Sends a one-time password (OTP) to the provided phone number for
-        user authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/send_mobile_otp:
     post:
       tags:
@@ -1539,17 +1399,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description:
-        Sends a one-time password (OTP) to the user's mobile device for
-        authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/send_email_otp:
     post:
       tags:
@@ -1566,15 +1424,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description: Sends an email containing a one-time password (OTP) for user authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/save:
     post:
       tags:
@@ -1584,15 +1442,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemNotice"
+              $ref: '#/components/schemas/SystemNotice'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageSystemNotice"
-      description: "Saves user authentication information."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageSystemNotice'
   /api/auth/register_login/verify_otp_for_register_and_login:
     post:
       tags:
@@ -1609,15 +1467,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJWTToken"
-      description: "Verify the One-Time Password (OTP) for user registration and login."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJWTToken'
   /api/auth/register_login/send_otp_for_register_and_login:
     post:
       tags:
@@ -1634,15 +1492,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description: Send OTP for user registration and login.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/register_farmer_by_adhar:
     post:
       tags:
@@ -1659,15 +1517,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJWTToken"
-      description: "Registers a new farmer using their Aadhaar number."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJWTToken'
   /api/auth/reg_farmer_by_mobile:
     post:
       tags:
@@ -1684,15 +1542,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRegisterDto"
+              $ref: '#/components/schemas/UserRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJWTToken"
-      description: Registers a new farmer using their mobile number.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJWTToken'
   /api/auth/reg_farmer_by_member_id:
     post:
       tags:
@@ -1709,15 +1567,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRegisterDto"
+              $ref: '#/components/schemas/UserRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJWTToken"
-      description: "Registers a new farmer using a member ID."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJWTToken'
   /api/auth/reg_farmer:
     post:
       tags:
@@ -1734,17 +1592,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRegisterDto"
+              $ref: '#/components/schemas/UserRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJWTToken"
-      description:
-        Registers a new farmer account. Requires a valid email, password,
-        and other farmer-specific details.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJWTToken'
   /api/auth/refresh:
     post:
       tags:
@@ -1761,15 +1617,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RefreshTokenRequest"
+              $ref: '#/components/schemas/RefreshTokenRequest'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description: "Refreshes the user's authentication token."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/logout_user:
     post:
       tags:
@@ -1789,14 +1645,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        Logs out the current user and invalidates their authentication
-        session.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/logout_from_all_devices:
     post:
       tags:
@@ -1818,15 +1672,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJWTToken"
-      description: "Logs out the user from all devices associated with their account."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJWTToken'
   /api/auth/login_verify_otp:
     post:
       tags:
@@ -1843,15 +1697,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJWTToken"
-      description: Authenticates a user by verifying a one-time password (OTP).
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJWTToken'
   /api/auth/kiosk/upload/{associateAgentId}:
     post:
       tags:
@@ -1892,14 +1746,12 @@ paths:
                   type: string
                   format: binary
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        "Uploads files to the server on behalf of the specified associate
-        agent."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/kiosk/save/operation_area:
     post:
       tags:
@@ -1916,15 +1768,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AreaOfOperationDto"
+              $ref: '#/components/schemas/AreaOfOperationDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: Saves the operation area for a kiosk. Requires authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/kiosk/remove_by_document_id/{documentId}:
     post:
       tags:
@@ -1944,12 +1796,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: Remove a kiosk by document ID. Requires authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/kiosk/details/save:
     post:
       tags:
@@ -1966,15 +1818,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AgentKioskDto"
+              $ref: '#/components/schemas/AgentKioskDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Saves the details of a kiosk authentication session."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/get_all_notice:
     post:
       tags:
@@ -2022,12 +1874,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "Retrieves all notices for the authenticated user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/generate_auth_token_for_rroot:
     post:
       tags:
@@ -2041,12 +1893,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringString"
-      description: "**Generates a new authentication token for the root user.**"
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringString'
   /api/auth/generate_auth_token:
     post:
       tags:
@@ -2070,14 +1922,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringString"
-      description:
-        Generates an authentication token for a user. Requires valid user
-        credentials.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringString'
   /api/auth/forget_password:
     post:
       tags:
@@ -2094,15 +1944,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description: "Allows users to reset their forgotten password."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/epacs/verify:
     post:
       tags:
@@ -2121,29 +1971,24 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        Verifies an ePACS code and returns a response indicating whether
-        the code is valid or not.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/epacs/verification:
     post:
       tags:
         - epacs-member-controller
       operationId: epacsAadharVerification
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        The `/api/auth/epacs/verification` endpoint is used to verify an
-        EPACS (Electronic Performance Appraisal and Certification System) code. This
-        POST endpoint requires authentication and validates the provided EPACS code.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/epacs/upload:
     post:
       tags:
@@ -2157,14 +2002,12 @@ paths:
             type: string
             format: binary
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        Uploads an electronic payment authorization code (ePACS) file to
-        the server.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/epacs/update_member_detail:
     post:
       tags:
@@ -2211,12 +2054,12 @@ paths:
           schema:
             type: boolean
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageEpacsMemberMapper"
-      description: Update member details in the ePACS system.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageEpacsMemberMapper'
   /api/auth/epacs/get_all_members_by_pacs:
     post:
       tags:
@@ -2264,14 +2107,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description:
-        "Retrieves a list of all members associated with the specified
-        PACS."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/epacs/get_all_member_details:
     post:
       tags:
@@ -2313,12 +2154,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "Retrieves detailed information for all members in the system."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/create_pass:
     post:
       tags:
@@ -2335,17 +2176,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description:
-        This endpoint allows users to create a new password for their account.
-        It requires the user's email address and desired password as input.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/beckn/on_select:
     post:
       tags:
@@ -2360,17 +2199,14 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: object
-              additionalProperties:
+            '*/*':
+              schema:
                 type: object
-      description:
-        The `/api/auth/beckn/on_select` endpoint is a POST method that
-        receives a user's selection during the Beckn protocol flow. It is used to
-        authenticate and authorize the user's selection.
+                additionalProperties:
+                  type: object
   /api/auth/beckn/on_search:
     post:
       tags:
@@ -2385,30 +2221,28 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: object
-              additionalProperties:
+            '*/*':
+              schema:
                 type: object
-      description: "Handles the incoming search request from the Beckn protocol."
+                additionalProperties:
+                  type: object
   /api/auth/beckn/encrypt_rbih_credentials:
     post:
       tags:
         - bpp-controller
       operationId: encryptRbihCredentials
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: object
-              additionalProperties:
+            '*/*':
+              schema:
                 type: object
-      description:
-        Encrypts the RBIH credentials for secure authentication in the
-        Beckn ecosystem.
+                additionalProperties:
+                  type: object
   /api/auth/beckn/encrypt_ekcc_credentials/{bankMasterId}:
     post:
       tags:
@@ -2422,32 +2256,28 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: object
-              additionalProperties:
+            '*/*':
+              schema:
                 type: object
-      description:
-        "Encrypts the EKCC (Electronic Know Your Customer) credentials for
-        the specified bank master ID."
+                additionalProperties:
+                  type: object
   /api/auth/beckn/encrypt_all_ekcc_credentials:
     post:
       tags:
         - bpp-controller
       operationId: encryptAllEkccCredentials
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: object
-              additionalProperties:
+            '*/*':
+              schema:
                 type: object
-      description:
-        "Encrypts and returns all EKCC (Encrypted Key-Credential Combination)
-        credentials."
+                additionalProperties:
+                  type: object
   /api/auth/beckn/encrypt:
     post:
       tags:
@@ -2462,15 +2292,12 @@ paths:
                 type: string
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: object
-      description:
-        The `/api/auth/beckn/encrypt` endpoint is used to securely encrypt
-        data for the Beckn protocol. This endpoint accepts a POST request and returns
-        the encrypted data.
+            '*/*':
+              schema:
+                type: object
   /api/auth/beckn/decrypt:
     post:
       tags:
@@ -2485,12 +2312,12 @@ paths:
                 type: string
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: object
-      description: "Decrypt and authenticate Beckn protocol messages."
+            '*/*':
+              schema:
+                type: object
   /api/auth/authenticate:
     post:
       tags:
@@ -2507,15 +2334,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginPayload"
+              $ref: '#/components/schemas/LoginPayload'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/JWTToken"
-      description: Authenticates a user and returns a session token.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JWTToken'
   /api/auth/associate/verify_otp:
     post:
       tags:
@@ -2532,17 +2359,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAssociateAgentVerificationDto"
-      description:
-        Verifies the One-Time Password (OTP) sent to the user for associating
-        an account.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAssociateAgentVerificationDto'
   /api/auth/associate/update_user_status:
     post:
       tags:
@@ -2567,14 +2392,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "**Update User Status**
-
-        Update the status of a user in the system."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/submit/{id}:
     post:
       tags:
@@ -2599,12 +2422,12 @@ paths:
           schema:
             type: boolean
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Submits an association request for the specified user ID."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/status:
     post:
       tags:
@@ -2623,12 +2446,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListAssociateAgentStatus"
-      description: "Retrieves the current status of an associate's authentication."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListAssociateAgentStatus'
   /api/auth/associate/send_otp:
     post:
       tags:
@@ -2645,15 +2468,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginViaOtp"
+              $ref: '#/components/schemas/LoginViaOtp'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageOtpResponsePayload"
-      description: "Sends a One-Time Password (OTP) to the user for authentication."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageOtpResponsePayload'
   /api/auth/associate/save_agent_detail:
     post:
       tags:
@@ -2670,15 +2493,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AssociateAgentDto"
+              $ref: '#/components/schemas/AssociateAgentDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: Save agent details for user authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/remove_by_company_id/{companyId}:
     post:
       tags:
@@ -2698,14 +2521,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        Removes an association between a company and its authorized users
-        based on the provided company ID.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/pan_verify_v1:
     post:
       tags:
@@ -2728,17 +2549,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RBIHPanVerificationPayload"
+              $ref: '#/components/schemas/RBIHPanVerificationPayload'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        Verifies the provided PAN (Permanent Account Number) information
-        for user association.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/get_all_users:
     post:
       tags:
@@ -2792,12 +2611,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description: "Retrieves a list of all registered users."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/associate/getAll/application_with_pagination:
     post:
       tags:
@@ -2856,15 +2675,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description:
-        This API endpoint allows you to retrieve a paginated list of all
-        applications associated with the current user. The request requires a POST
-        method and returns the requested data in a structured format.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/associate/getAll/application:
     post:
       tags:
@@ -2883,14 +2699,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListAgentDetailsResponceDto"
-      description:
-        "Retrieves a list of all associated applications for the authenticated
-        user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListAgentDetailsResponceDto'
   /api/auth/associate/company_logo:
     post:
       tags:
@@ -2921,12 +2735,12 @@ paths:
                   type: string
                   format: binary
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Uploads a company logo for the authenticated user's account."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/company_detail:
     post:
       tags:
@@ -2948,17 +2762,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CompanyDto"
+              $ref: '#/components/schemas/CompanyDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        This endpoint allows users to associate their account with a company's
-        details.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/bank/save_detail:
     post:
       tags:
@@ -2975,15 +2787,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AgentBankDto"
+              $ref: '#/components/schemas/AgentBankDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Saves the bank account details for an authenticated user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/agent_detail_by_user_id/{id}:
     post:
       tags:
@@ -3003,12 +2815,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAssociateAgent"
-      description: "Retrieves the agent details for the specified user ID."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAssociateAgent'
   /api/auth/associate/agent_detail/{id}:
     post:
       tags:
@@ -3028,12 +2840,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAgentDetailsResponceDto"
-      description: "Retrieve detailed information about a specific agent by their ID."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAgentDetailsResponceDto'
   /api/auth/associate/add_user/{companyId}:
     post:
       tags:
@@ -3056,19 +2868,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AssociateAgentUserDto"
+              $ref: '#/components/schemas/AssociateAgentUserDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "**Add a new user to the specified company.**
-
-
-        This endpoint allows you to create a new user and associate them with the
-        specified company."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/store:
     post:
       tags:
@@ -3087,24 +2895,24 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: Stores aadhar details for a user. Requires authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/set_aadhar_address:
     post:
       tags:
         - aadhar-authentication-kyc-controller
       operationId: setAadharAddress
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Sets the Aadhaar address for the authenticated user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/otp:
     post:
       tags:
@@ -3129,12 +2937,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Generates and sends a one-time password (OTP) for Aadhar authentication."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/kyc:
     post:
       tags:
@@ -3164,14 +2972,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAadharKyc"
-      description:
-        Performs Aadhaar-based KYC (Know Your Customer) verification for
-        user authentication.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAadharKyc'
   /api/auth/aadhar/v1/joint_applicant_otp:
     post:
       tags:
@@ -3207,15 +3013,12 @@ paths:
           schema:
             type: boolean
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        This API endpoint is used to generate an OTP (One-Time Password)
-        for a joint applicant in the Aadhar authentication process. It requires a
-        POST request to the `/api/auth/aadhar/v1/joint_applicant_otp` endpoint.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/joint_applicant_kyc:
     post:
       tags:
@@ -3262,12 +3065,12 @@ paths:
           schema:
             type: boolean
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJointApplicant"
-      description: " Perform KYC (Know Your Customer) verification for joint applicants."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJointApplicant'
   /api/auth/aadhar/v1/joint_applicant/bio_kyc:
     post:
       tags:
@@ -3290,17 +3093,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BioKycPayload"
+              $ref: '#/components/schemas/BioKycPayload'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageJointApplicant"
-      description:
-        "Performs a bio-metric KYC (Know Your Customer) verification for
-        a joint applicant."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageJointApplicant'
   /api/auth/aadhar/v1/get_refrence:
     post:
       tags:
@@ -3319,15 +3120,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "**POST /api/auth/aadhar/v1/get_refrence**
-
-
-        Fetches a reference number for Aadhaar authentication."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/get_aadhar:
     post:
       tags:
@@ -3346,14 +3144,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        This endpoint allows users to fetch Aadhar card information using
-        the provided Aadhar number.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/expire_kyc:
     post:
       tags:
@@ -3384,14 +3180,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        "Expires the Aadhaar-based KYC (Know Your Customer) verification for
-        a user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/check_name_as_pr_aadhar:
     post:
       tags:
@@ -3415,14 +3209,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        "Verifies if the provided name matches the name associated with
-        the given Aadhar number."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/bio:
     post:
       tags:
@@ -3452,14 +3244,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageKycBioDto"
-      description:
-        "Retrieves the biographical information associated with an Aadhaar
-        number."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageKycBioDto'
   /api/auth/aadhar/v1/bio/kyc:
     post:
       tags:
@@ -3489,12 +3279,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAadharKyc"
-      description: "Verifies and retrieves Aadhaar-based KYC (Know Your Customer) information."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAadharKyc'
   /api/auth/aadhar/v1/associate_agent_otp:
     post:
       tags:
@@ -3513,14 +3303,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        This endpoint is used to associate an agent with an Aadhar number
-        by generating and sending a one-time password (OTP).
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/aadhar/v1/associate_agent_kyc:
     post:
       tags:
@@ -3549,12 +3337,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAssociateAgent"
-      description: "Associates an agent's Aadhaar information with their KYC profile."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAssociateAgent'
   /api/auth/aadhar/v1/associate_agent/bio_kyc:
     post:
       tags:
@@ -3571,17 +3359,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BioKycPayload"
+              $ref: '#/components/schemas/BioKycPayload'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAssociateAgent"
-      description:
-        "Performs biometric KYC (Know Your Customer) for associating an agent
-        with an Aadhaar account."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAssociateAgent'
   /api/auth/aadhar/kyc_for_member:
     post:
       tags:
@@ -3598,17 +3384,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAadharKyc"
-      description:
-        Performs KYC (Know Your Customer) verification for a member using
-        their Aadhaar information.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAadharKyc'
   /api/auth/aadhar/guarantor_kyc:
     post:
       tags:
@@ -3636,15 +3420,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FarmerRegisterDto"
+              $ref: '#/components/schemas/FarmerRegisterDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageLoanGuarantor"
-      description: "Verifies the Aadhaar-based KYC details of a guarantor."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageLoanGuarantor'
   /api/auth/aadhar/encrypt_existing_kyc:
     post:
       tags:
@@ -3658,12 +3442,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageLong"
-      description: "Securely encrypts existing customer KYC data using Aadhaar authentication."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageLong'
   /api/auth/aadhar/encrypt:
     post:
       tags:
@@ -3680,17 +3464,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AadharKycEncryptRequestDto"
+              $ref: '#/components/schemas/AadharKycEncryptRequestDto'
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAadharKycEncryptResponseDto"
-      description:
-        Encrypts the given Aadhar number using the organization's secure
-        encryption algorithm.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAadharKycEncryptResponseDto'
   /api/auth/aadhar/encrpt/decrpt/values:
     post:
       tags:
@@ -3709,15 +3491,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringString"
-      description:
-        This API endpoint is responsible for encrypting and decrypting
-        Aadhar card values. It accepts POST requests and provides a secure way to
-        handle sensitive Aadhar card information.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringString'
   /api/auth/aadhar/download:
     post:
       tags:
@@ -3743,13 +3522,13 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: string
-              format: binary
-      description: "Allows users to download their Aadhaar card information."
+            '*/*':
+              schema:
+                type: string
+                format: binary
   /api/auth/aadhar/decrypted_kyc:
     post:
       tags:
@@ -3796,14 +3575,12 @@ paths:
                 type: object
         required: true
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessagePaginationDto"
-      description:
-        This endpoint is used to decrypt and retrieve the KYC (Know Your
-        Customer) information associated with an Aadhaar number.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
   /api/auth/user/{id}:
     get:
       tags:
@@ -3823,12 +3600,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageUser"
-      description: "Retrieve user data by ID."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageUser'
   /api/auth/user/user_detail/{id}:
     get:
       tags:
@@ -3848,12 +3625,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageUserDetailResponsePayload"
-      description: "Retrieve detailed information about a specific user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageUserDetailResponsePayload'
   /api/auth/user/update_aadhar_data:
     get:
       tags:
@@ -3872,12 +3649,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Update the user's Aadhaar data in the system."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/select_farmer:
     get:
       tags:
@@ -3897,12 +3674,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: "Retrieves the currently authenticated user's farmer details."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/user/nabard_user_detail/{id}:
     get:
       tags:
@@ -3922,12 +3699,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageUserDetailResponsePayload"
-      description: "Retrieve details for a specific NABARD user."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageUserDetailResponsePayload'
   /api/auth/user/get_user_role_permission:
     get:
       tags:
@@ -3941,12 +3718,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListMapStringObject"
-      description: Get the current user's role and associated permissions.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListMapStringObject'
   /api/auth/user/get_user_permission:
     get:
       tags:
@@ -3966,12 +3743,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListUserRoleGroupPayload"
-      description: Retrieves the permissions for the authenticated user.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListUserRoleGroupPayload'
   /api/auth/user/get_all_posting_place:
     get:
       tags:
@@ -3996,14 +3773,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListMapStringObject"
-      description:
-        This endpoint retrieves a list of all posting places associated
-        with the authenticated user.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListMapStringObject'
   /api/auth/user/fetch_user_permission:
     get:
       tags:
@@ -4017,12 +3792,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListMapStringObject"
-      description: Fetches the user's permissions.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListMapStringObject'
   /api/auth/kiosk/get_by_document_id/{documentId}:
     get:
       tags:
@@ -4042,14 +3817,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAgentDocument"
-      description:
-        Retrieves the kiosk information associated with the specified document
-        ID.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAgentDocument'
   /api/auth/kiosk/get_by_associate_agent_id/{associateAgentId}:
     get:
       tags:
@@ -4069,14 +3842,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListAgentDocument"
-      description:
-        Retrieves the kiosk information associated with the provided associate
-        agent ID.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListAgentDocument'
   /api/auth/kiosk/download:
     get:
       tags:
@@ -4090,25 +3861,25 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: string
-              format: binary
-      description: "Provides authorized access to download content."
+            '*/*':
+              schema:
+                type: string
+                format: binary
   /api/auth/get_active_notice:
     get:
       tags:
         - authentication-controller
       operationId: getActivatedSystemNotice
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageSystemNotice"
-      description: "Retrieve the currently active notice or alert."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageSystemNotice'
   /api/auth/getToken:
     get:
       tags:
@@ -4137,12 +3908,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringString"
-      description: Generates a JWT token for authenticated access to the API.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringString'
   /api/auth/epacs/member_detail/{id}:
     get:
       tags:
@@ -4183,12 +3954,12 @@ paths:
           schema:
             type: boolean
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageEpacsMemberMapper"
-      description: Retrieves the details of a member by their unique identifier.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageEpacsMemberMapper'
   /api/auth/epacs/intellect_epacs:
     get:
       tags:
@@ -4206,29 +3977,24 @@ paths:
           schema:
             type: boolean
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description:
-        Retrieves a list of Intellect ePACS associated with the authenticated
-        user.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/epacs/get_all_count:
     get:
       tags:
         - epacs-member-controller
       operationId: getEPACSDashboardCount
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageEPacsDashboardStatusCount"
-      description:
-        The `GET /api/auth/epacs/get_all_count` endpoint returns the total
-        count of all ePACS (electronic Payer Authorizations and Claims Submissions)
-        associated with the authenticated user.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageEPacsDashboardStatusCount'
   /api/auth/epacs/download-members:
     get:
       tags:
@@ -4241,15 +4007,15 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              type: array
-              items:
-                type: string
-                format: byte
-      description: "Retrieve a list of members eligible for EPACS download."
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: byte
   /api/auth/associate/get_user/{userId}:
     get:
       tags:
@@ -4269,12 +4035,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAgentDetailsResponceDto"
-      description: Retrieves a user's information by their user ID.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAgentDetailsResponceDto'
   /api/auth/associate/get_by_company_id/{companyId}:
     get:
       tags:
@@ -4294,12 +4060,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageString"
-      description: Retrieves a list of associated users for the specified company.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
   /api/auth/associate/action_history/{associateAgentId}:
     get:
       tags:
@@ -4319,12 +4085,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageListAgentActionHistory"
-      description: Retrieves the action history for the specified associate agent.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListAgentActionHistory'
   /api/auth/aadhar/v1/update_farmer_data:
     get:
       tags:
@@ -4353,12 +4119,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description: "Updates the farmer data associated with the provided Aadhar number."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
   /api/auth/aadhar/v1/compare_data:
     get:
       tags:
@@ -4378,12 +4144,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description: "Compares user-provided Aadhaar data with government records."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/aadhar/v1/check_kyc:
     get:
       tags:
@@ -4408,12 +4174,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageMapStringObject"
-      description: "Verifies the KYC status of an Aadhaar number."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMapStringObject'
   /api/auth/aadhar/get_kyc_by_member_id:
     get:
       tags:
@@ -4433,14 +4199,12 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAadharKyc"
-      description:
-        "Retrieves the KYC (Know Your Customer) details for a member based
-        on their member ID."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAadharKyc'
   /api/auth/aadhar/full_details/{id}:
     get:
       tags:
@@ -4459,14 +4223,12 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessage"
-      description:
-        Retrieves the full details of an Aadhaar card based on the provided
-        ID.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessage'
   /api/auth/aadhar/encrypt/{id}:
     get:
       tags:
@@ -4486,13 +4248,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageAadharKyc"
-      description: "Encrypt the given Aadhaar ID using the application's secure
-        encryption mechanism."
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAadharKyc'
   /api/auth/epacs/delete_epacsmember_farmer:
     delete:
       tags:
@@ -4512,12 +4273,12 @@ paths:
             type: string
             default: en
       responses:
-        200:
+        '200':
           description: OK
           content:
-            schema:
-              $ref: "#/components/schemas/ResponseMessageBoolean"
-      description: Deletes an ePACS member farmer from the system.
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageBoolean'
 components:
   schemas:
     ResponseMessageBoolean:
@@ -4706,7 +4467,7 @@ components:
         areaOfOperations:
           type: array
           items:
-            $ref: "#/components/schemas/AreaOfOperationDto"
+            $ref: '#/components/schemas/AreaOfOperationDto'
         isActivated:
           type: boolean
         isKyc:
@@ -4802,7 +4563,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/PaginationDto"
+          $ref: '#/components/schemas/PaginationDto'
         dataList:
           type: array
           items:
@@ -4820,7 +4581,7 @@ components:
         permissions:
           type: array
           items:
-            $ref: "#/components/schemas/UserRolePayload"
+            $ref: '#/components/schemas/UserRolePayload'
     UserRolePayload:
       type: object
       properties:
@@ -4912,7 +4673,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/UserDetailResponsePayload"
+          $ref: '#/components/schemas/UserDetailResponsePayload'
         dataList:
           type: array
           items:
@@ -5117,7 +4878,7 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/Otp"
+            $ref: '#/components/schemas/Otp'
         dataList:
           type: array
           items:
@@ -5218,7 +4979,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/User"
+          $ref: '#/components/schemas/User'
         dataList:
           type: array
           items:
@@ -5238,7 +4999,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/UpdateEmailCsvResponse"
+          $ref: '#/components/schemas/UpdateEmailCsvResponse'
         dataList:
           type: array
           items:
@@ -5279,7 +5040,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/OtpResponsePayload"
+          $ref: '#/components/schemas/OtpResponsePayload'
         dataList:
           type: array
           items:
@@ -5321,7 +5082,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/SystemNotice"
+          $ref: '#/components/schemas/SystemNotice'
         dataList:
           type: array
           items:
@@ -5348,7 +5109,7 @@ components:
         lastLoginList:
           type: array
           items:
-            $ref: "#/components/schemas/LastLoginDto"
+            $ref: '#/components/schemas/LastLoginDto'
         orgnisationId:
           type: integer
           format: int64
@@ -5382,7 +5143,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/JWTToken"
+          $ref: '#/components/schemas/JWTToken'
         dataList:
           type: array
           items:
@@ -5462,6 +5223,9 @@ components:
     EpacsMemberMapper:
       type: object
       properties:
+        getentityId:
+          type: integer
+          format: int64
         getstatus:
           type: string
         getmemberId:
@@ -5475,9 +5239,6 @@ components:
         getfarmerId:
           type: integer
           format: int64
-        getentityId:
-          type: integer
-          format: int64
     ResponseMessageEpacsMemberMapper:
       type: object
       properties:
@@ -5489,7 +5250,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/EpacsMemberMapper"
+          $ref: '#/components/schemas/EpacsMemberMapper'
         dataList:
           type: array
           items:
@@ -5552,7 +5313,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/AssociateAgentVerificationDto"
+          $ref: '#/components/schemas/AssociateAgentVerificationDto'
         dataList:
           type: array
           items:
@@ -5593,7 +5354,7 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/AssociateAgentStatus"
+            $ref: '#/components/schemas/AssociateAgentStatus'
         dataList:
           type: array
           items:
@@ -5681,21 +5442,21 @@ components:
       type: object
       properties:
         associateAgentResponcePayload:
-          $ref: "#/components/schemas/AssociateAgentResponcePayload"
+          $ref: '#/components/schemas/AssociateAgentResponcePayload'
         agentKioskDto:
-          $ref: "#/components/schemas/AgentKioskDto"
+          $ref: '#/components/schemas/AgentKioskDto'
         areaOfOperationDto:
           type: array
           items:
-            $ref: "#/components/schemas/AreaOfOperationDto"
+            $ref: '#/components/schemas/AreaOfOperationDto'
         companyDto:
-          $ref: "#/components/schemas/CompanyDto"
+          $ref: '#/components/schemas/CompanyDto'
         resubmissionReason:
           type: string
         agentDocuments:
           type: array
           items:
-            $ref: "#/components/schemas/AgentDocument"
+            $ref: '#/components/schemas/AgentDocument'
     AgentDocument:
       type: object
       properties:
@@ -5844,7 +5605,7 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/AgentDetailsResponceDto"
+            $ref: '#/components/schemas/AgentDetailsResponceDto'
         dataList:
           type: array
           items:
@@ -5895,7 +5656,7 @@ components:
         userName:
           type: string
         gender:
-          $ref: "#/components/schemas/LovMaster"
+          $ref: '#/components/schemas/LovMaster'
         genderId:
           type: integer
           format: int64
@@ -6048,7 +5809,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/AssociateAgent"
+          $ref: '#/components/schemas/AssociateAgent'
         dataList:
           type: array
           items:
@@ -6068,7 +5829,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/AgentDetailsResponceDto"
+          $ref: '#/components/schemas/AgentDetailsResponceDto'
         dataList:
           type: array
           items:
@@ -6197,7 +5958,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/AadharKyc"
+          $ref: '#/components/schemas/AadharKyc'
         dataList:
           type: array
           items:
@@ -6216,21 +5977,21 @@ components:
           type: integer
           format: int64
         gender:
-          $ref: "#/components/schemas/LovMaster"
+          $ref: '#/components/schemas/LovMaster'
         genderId:
           type: integer
           format: int64
         genderName:
           type: string
         relation:
-          $ref: "#/components/schemas/LovMaster"
+          $ref: '#/components/schemas/LovMaster'
         relationId:
           type: integer
           format: int64
         relationName:
           type: string
         idProof:
-          $ref: "#/components/schemas/LovMaster"
+          $ref: '#/components/schemas/LovMaster'
         idProodId:
           type: integer
           format: int64
@@ -6289,11 +6050,10 @@ components:
           type: string
         netWorth:
           type: number
-          format: double
         address:
           type: string
         occupation:
-          $ref: "#/components/schemas/LovMaster"
+          $ref: '#/components/schemas/LovMaster'
     ResponseMessageJointApplicant:
       type: object
       properties:
@@ -6305,7 +6065,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/JointApplicant"
+          $ref: '#/components/schemas/JointApplicant'
         dataList:
           type: array
           items:
@@ -6355,7 +6115,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/KycBioDto"
+          $ref: '#/components/schemas/KycBioDto'
         dataList:
           type: array
           items:
@@ -6374,7 +6134,7 @@ components:
           type: integer
           format: int64
         occupationData:
-          $ref: "#/components/schemas/LovMaster"
+          $ref: '#/components/schemas/LovMaster'
         occupationDataId:
           type: integer
           format: int64
@@ -6391,7 +6151,6 @@ components:
           type: string
         netWorth:
           type: number
-          format: double
         esignUserName:
           type: string
         esignToken:
@@ -6441,7 +6200,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/LoanGuarantor"
+          $ref: '#/components/schemas/LoanGuarantor'
         dataList:
           type: array
           items:
@@ -6620,7 +6379,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/AadharKycEncryptResponseDto"
+          $ref: '#/components/schemas/AadharKycEncryptResponseDto'
         dataList:
           type: array
           items:
@@ -6666,7 +6425,7 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/UserRoleGroupPayload"
+            $ref: '#/components/schemas/UserRoleGroupPayload'
         dataList:
           type: array
           items:
@@ -6683,7 +6442,7 @@ components:
         event:
           type: array
           items:
-            $ref: "#/components/schemas/UserRolePayload"
+            $ref: '#/components/schemas/UserRolePayload'
     ResponseMessageAgentDocument:
       type: object
       properties:
@@ -6695,7 +6454,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/AgentDocument"
+          $ref: '#/components/schemas/AgentDocument'
         dataList:
           type: array
           items:
@@ -6717,7 +6476,7 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/AgentDocument"
+            $ref: '#/components/schemas/AgentDocument'
         dataList:
           type: array
           items:
@@ -6749,7 +6508,7 @@ components:
         key:
           type: string
         data:
-          $ref: "#/components/schemas/EPacsDashboardStatusCount"
+          $ref: '#/components/schemas/EPacsDashboardStatusCount'
         dataList:
           type: array
           items:
@@ -6787,7 +6546,7 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/AgentActionHistory"
+            $ref: '#/components/schemas/AgentActionHistory'
         dataList:
           type: array
           items:

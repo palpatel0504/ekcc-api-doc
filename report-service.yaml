@@ -1,0 +1,2200 @@
+openapi: 3.0.1
+info:
+  title: Report Microservice API
+servers:
+  - url: http://report-service:8085
+    description: Generated server url
+paths:
+  /api/report/mis/updateMisFilter:
+    put:
+      tags:
+        - mis-filter-controller
+      operationId: updateMisFilter
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MisFilterDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
+  /api/report/notifications/sms:
+    post:
+      tags:
+        - notification-controller
+      operationId: downloadSMSReport
+      parameters:
+        - name: filterType
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: id
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /api/report/notifications/mark_as_read_all_by_user_id:
+    post:
+      tags:
+        - notification-controller
+      operationId: markAllAsRead
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
+  /api/report/notifications/mark_as_read:
+    post:
+      tags:
+        - notification-controller
+      operationId: markAsRead
+      parameters:
+        - name: notificationId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
+  /api/report/notifications/get_all_by_user_id:
+    post:
+      tags:
+        - notification-controller
+      operationId: getAllByUserId
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: id
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: desc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessagePaginationDto'
+  /api/report/mis/saveMisFilter:
+    post:
+      tags:
+        - mis-filter-controller
+      operationId: saveMisReport
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MisFilterDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMisFilter'
+  /api/report/mis/duplicateMisFilter:
+    post:
+      tags:
+        - mis-filter-controller
+      operationId: createMisDuplicateByName
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+        - name: misFilterId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMisFilter'
+  /api/report/mis/downloadold:
+    post:
+      tags:
+        - mis-filter-controller
+      operationId: downloadFileFromLocalForMisFilter
+      parameters:
+        - name: misFilterId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: id
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /api/report/mis/download_nabard_mis:
+    post:
+      tags:
+        - mis-filter-controller
+      operationId: downloadNabardMisReport
+      parameters:
+        - name: misFilterId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /api/report/mis/download:
+    post:
+      tags:
+        - mis-filter-controller
+      operationId: downloadFileFromLocalForMisFilter1
+      parameters:
+        - name: misFilterId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: id
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /api/report/mis/consolidated_download:
+    post:
+      tags:
+        - mis-filter-controller
+      operationId: downloadFileFromLocalForMisFilterNabard
+      parameters:
+        - name: misFilterId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: id
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /api/report/mis/consolidated_download1:
+    post:
+      tags:
+        - mis-filter-controller
+      operationId: downloadFileFromLocalForMisFilterNabard1
+      parameters:
+        - name: misFilterId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: id
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /api/report/dashbord/status_count:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getLoanStatusCounts
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardStatusCount'
+  /api/report/dashbord/loan-dashboard:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getLoanDashboardData
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: totalDisbursementAmount
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: desc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListLoanDashboardDto'
+  /api/report/dashbord/loan-awaiting-dashboard:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getLoanAwaitingDashboardData
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: awaitingSanctionAmount
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: desc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListLoanAwaitingDashboardDto'
+  /api/report/dashbord/get_top_10_fastest_branches:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getTop10FastestBranches
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardBranchTurnaroundTime'
+  /api/report/dashbord/get_top10_branches_by_loan_count:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getTop10BranchesByLoanCount
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardBranchLoanCount'
+  /api/report/dashbord/get_statewise_loan_count_and_amount:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getStateWiseLoanCountAndAmount
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardStateWiseLoanCountAmount'
+  /api/report/dashbord/get_sanctioned_rejected_branch_loan_counts:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getBranchLoanStatusCounts
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardSanctionedRejectedLoanCount'
+  /api/report/dashbord/get_sanctioned_first_disbursed_loan_counts_and_amount:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getSanctionedFirstDisbursedLoanCountsAndAmount
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardSanctionedRejectedLoanCount'
+  /api/report/dashbord/get_rangewise_loan_data:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getRangeWiseLoanData
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageDashboardRangeWiseLoanData'
+  /api/report/dashbord/get_genderwise_loan_count_and_amount:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getGenderWiseLoanCountAndAmount
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageDashboardGenderWiseLoanData'
+  /api/report/dashbord/get_filtered_loan:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getFilteredLoan
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardTotalLoanCount'
+  /api/report/dashbord/get_farmer_type_wise_loan_data:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getFarmerTypeWiseLoanData
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageDashboardFarmerTypeWiseLoanData'
+  /api/report/dashbord/get_category_wise_loan_data:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getCategoryWiseLoanData
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardCategoryWiseLoanData'
+  /api/report/dashbord/get_average_days_between_loan_statuses:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getAverageDaysBetweenLoanStatuses
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterParameter'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardAverageDaysBetweenLoanStatuses'
+  /api/report/dashbord/get_all_loan_status:
+    post:
+      tags:
+        - dashboard-controller
+      operationId: getAllStatus
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardCountMapper'
+  /api/report/notifications/get:
+    get:
+      tags:
+        - notification-controller
+      operationId: getNotification
+      parameters:
+        - name: notificationId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageNotification'
+  /api/report/mis/getMisFilterById/{id}:
+    get:
+      tags:
+        - mis-filter-controller
+      operationId: getMisFilter
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageMisFilterMapper'
+  /api/report/mis/getAllMisFilters:
+    get:
+      tags:
+        - mis-filter-controller
+      operationId: getAllMisFilters
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: isGetAllPresets
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListMisFilter'
+  /api/report/dashbord/side_bar_view:
+    get:
+      tags:
+        - dashboard-controller
+      operationId: getSideBarViewData
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageSideBarViewResponse'
+  /api/report/dashbord/get_all_count:
+    get:
+      tags:
+        - dashboard-controller
+      operationId: getAllDashboardCount
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageListDashboardStatusCount'
+  /api/report/dashbord/get_All_Associate:
+    get:
+      tags:
+        - dashboard-controller
+      operationId: getAll
+      parameters:
+        - name: isIndividual
+          in: query
+          required: true
+          schema:
+            type: boolean
+        - name: stateId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: districtId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: associateId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            default: en
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageAssociateMapper'
+  /api/report/mis/deleteMisFilterById/{id}:
+    delete:
+      tags:
+        - mis-filter-controller
+      operationId: deleteMisFilter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseMessageString'
+components:
+  schemas:
+    MisFilterDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        state:
+          type: string
+        stateMasterId:
+          type: integer
+          format: int64
+        district:
+          type: string
+        districtMasterId:
+          type: integer
+          format: int64
+        bankType:
+          type: string
+        bankName:
+          type: string
+        bankMasterId:
+          type: integer
+          format: int64
+        productMasterId:
+          type: integer
+          format: int64
+        loanStatusMasterId:
+          type: integer
+          format: int64
+        gender:
+          type: string
+        genderId:
+          type: integer
+          format: int64
+        caste:
+          type: string
+        casteId:
+          type: integer
+          format: int64
+        religion:
+          type: string
+        religionId:
+          type: integer
+          format: int64
+        croppingSeason:
+          type: string
+        croppingSeasonId:
+          type: integer
+          format: int64
+        cropType:
+          type: string
+        cropTypeId:
+          type: integer
+          format: int64
+        cropName:
+          type: string
+        cropNameId:
+          type: integer
+          format: int64
+        landTypeId:
+          type: integer
+          format: int64
+        hierarchyLevel1Name:
+          type: string
+        hierarchyLevel1Id:
+          type: integer
+          format: int64
+        hierarchyLevel2Name:
+          type: string
+        hierarchyLevel2Id:
+          type: integer
+          format: int64
+        hierarchyLevel3Name:
+          type: string
+        hierarchyLevel3Id:
+          type: integer
+          format: int64
+        hierarchyLevel4Name:
+          type: string
+        hierarchyLevel4Id:
+          type: integer
+          format: int64
+        hierarchyLevel5Name:
+          type: string
+        hierarchyLevel5Id:
+          type: integer
+          format: int64
+        hierarchyLevel6Name:
+          type: string
+        hierarchyLevel6Id:
+          type: integer
+          format: int64
+        loanType:
+          type: string
+        loanMode:
+          type: string
+        loanStatus:
+          type: string
+        loanAmountRange:
+          type: string
+        minimumAmount:
+          type: number
+        maximumAmount:
+          type: number
+        isSameAsMin:
+          type: boolean
+        systemGenerated:
+          type: boolean
+        userType:
+          type: string
+        isIndividual:
+          type: boolean
+        associateId:
+          type: integer
+          format: int64
+        animalHusbandryType:
+          type: string
+        animalHusbandryTypeId:
+          type: integer
+          format: int64
+        fishFarmingType:
+          type: string
+        fishFarmingTypeId:
+          type: integer
+          format: int64
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+    ResponseMessageString:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: string
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    PaginationDto:
+      type: object
+      properties:
+        content:
+          type: object
+        numberOfPages:
+          type: integer
+          format: int32
+        numOfLedDistributed:
+          type: integer
+          format: int64
+        numberOfTotalElements:
+          type: integer
+          format: int64
+        others:
+          type: object
+          additionalProperties:
+            type: object
+    ResponseMessagePaginationDto:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/PaginationDto'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    MisFilter:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        state:
+          type: string
+        stateMasterId:
+          type: integer
+          format: int64
+        districtMasterId:
+          type: integer
+          format: int64
+        district:
+          type: string
+        bankMasterId:
+          type: integer
+          format: int64
+        productMasterId:
+          type: integer
+          format: int64
+        loanStatusMasterId:
+          type: integer
+          format: int64
+        genderId:
+          type: integer
+          format: int64
+        casteId:
+          type: integer
+          format: int64
+        religionId:
+          type: integer
+          format: int64
+        croppingSeasonId:
+          type: integer
+          format: int64
+        cropTypeId:
+          type: integer
+          format: int64
+        cropNameId:
+          type: integer
+          format: int64
+        landTypeId:
+          type: integer
+          format: int64
+        hierarchyLevel1Name:
+          type: string
+        hierarchyLevel1Id:
+          type: integer
+          format: int64
+        hierarchyLevel2Name:
+          type: string
+        hierarchyLevel2Id:
+          type: integer
+          format: int64
+        hierarchyLevel3Name:
+          type: string
+        hierarchyLevel3Id:
+          type: integer
+          format: int64
+        hierarchyLevel4Name:
+          type: string
+        hierarchyLevel4Id:
+          type: integer
+          format: int64
+        hierarchyLevel5Name:
+          type: string
+        hierarchyLevel5Id:
+          type: integer
+          format: int64
+        hierarchyLevel6Name:
+          type: string
+        hierarchyLevel6Id:
+          type: integer
+          format: int64
+        bankType:
+          type: string
+        bankName:
+          type: string
+        loanType:
+          type: string
+        loanMode:
+          type: string
+        loanStatus:
+          type: string
+        minimumAmount:
+          type: number
+        isSameAsMin:
+          type: boolean
+        maximumAmount:
+          type: number
+        cropName:
+          type: string
+        croppingSeason:
+          type: string
+        cropType:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        userType:
+          type: string
+        gender:
+          type: string
+        caste:
+          type: string
+        religion:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        systemGenerated:
+          type: boolean
+        loanAmountRange:
+          type: string
+        isIndividual:
+          type: boolean
+        associateId:
+          type: integer
+          format: int64
+        animalHusbandryType:
+          type: string
+        animalHusbandryTypeId:
+          type: integer
+          format: int64
+        fishFarmingType:
+          type: string
+        fishFarmingTypeId:
+          type: integer
+          format: int64
+    ResponseMessageMisFilter:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/MisFilter'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    FilterParameter:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        stateMasterId:
+          type: integer
+          format: int64
+        districtMasterId:
+          type: integer
+          format: int64
+        bankType:
+          type: string
+        bankMasterId:
+          type: integer
+          format: int64
+        entityLevelId:
+          type: integer
+          format: int64
+        landTypeId:
+          type: integer
+          format: int64
+        categoryId:
+          type: integer
+          format: int64
+        farmerType:
+          type: string
+          enum:
+            - SMALL
+            - MARGINAL
+            - OTHERS
+        daysPeriod:
+          type: integer
+          format: int64
+        productMasterId:
+          type: integer
+          format: int64
+        statusMasterId:
+          type: integer
+          format: int64
+        loanAmountRange:
+          type: string
+        year:
+          type: string
+        wmy:
+          type: string
+        isCount:
+          type: boolean
+    DashboardStatusCount:
+      type: object
+      properties:
+        statusName:
+          type: string
+        totalCount:
+          type: integer
+          format: int64
+        statusId:
+          type: integer
+          format: int64
+        totalAmount:
+          type: string
+        totalAmountofAllApplication:
+          type: number
+          format: double
+        totalSanctionAmount:
+          type: string
+        totalInPrincipalSanctionAmount:
+          type: string
+        additionAmount:
+          type: integer
+          format: int64
+        totalPartialyClosedAmount:
+          type: number
+        totalFullyClosedAmount:
+          type: number
+        totalPartiallyClosedCount:
+          type: integer
+          format: int64
+        totalFullyClosedCount:
+          type: integer
+          format: int64
+    ResponseMessageListDashboardStatusCount:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardStatusCount'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    LoanDashboardDto:
+      type: object
+      properties:
+        bankId:
+          type: integer
+          format: int64
+        bankName:
+          type: string
+        bankType:
+          type: string
+        entityId:
+          type: integer
+          format: int64
+        entityName:
+          type: string
+        loanType:
+          type: string
+        loanCount:
+          type: integer
+          format: int64
+        totalDisbursementAmount:
+          type: string
+        avgInPrincipleToDisbursedDays:
+          type: string
+    ResponseMessageListLoanDashboardDto:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanDashboardDto'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    LoanAwaitingDashboardDto:
+      type: object
+      properties:
+        bankId:
+          type: integer
+          format: int64
+        bankName:
+          type: string
+        bankType:
+          type: string
+        entityId:
+          type: integer
+          format: int64
+        entityName:
+          type: string
+        awaitingSanctionCount:
+          type: integer
+          format: int64
+        awaitingSanctionAmount:
+          type: string
+        awaitingDisbursementCount:
+          type: integer
+          format: int64
+        awaitingDisbursementAmount:
+          type: string
+    ResponseMessageListLoanAwaitingDashboardDto:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanAwaitingDashboardDto'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardBranchTurnaroundTime:
+      type: object
+      properties:
+        branchId:
+          type: integer
+          format: int64
+        branchName:
+          type: string
+        averageTurnaroundTimeInDays:
+          type: integer
+          format: int32
+    ResponseMessageListDashboardBranchTurnaroundTime:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardBranchTurnaroundTime'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardBranchLoanCount:
+      type: object
+      properties:
+        branchId:
+          type: integer
+          format: int64
+        branchName:
+          type: string
+        totalLoanCount:
+          type: integer
+          format: int32
+    ResponseMessageListDashboardBranchLoanCount:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardBranchLoanCount'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardStateWiseLoanCountAmount:
+      type: object
+      properties:
+        stateId:
+          type: integer
+          format: int64
+        stateName:
+          type: string
+        districtId:
+          type: integer
+          format: int64
+        districtName:
+          type: string
+        totalLoanCount:
+          type: integer
+          format: int64
+        totalLoanAmount:
+          type: string
+    ResponseMessageListDashboardStateWiseLoanCountAmount:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardStateWiseLoanCountAmount'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardSanctionedRejectedLoanCount:
+      type: object
+      properties:
+        branchId:
+          type: integer
+          format: int64
+        branchName:
+          type: string
+        totalRejectedLoanCount:
+          type: integer
+          format: int64
+        totalSanctionedLoanCount:
+          type: integer
+          format: int64
+    ResponseMessageListDashboardSanctionedRejectedLoanCount:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardSanctionedRejectedLoanCount'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardRangeWiseLoanData:
+      type: object
+      properties:
+        below2Count:
+          type: integer
+          format: int64
+        below2Amount:
+          type: string
+        from2To3Count:
+          type: integer
+          format: int64
+        from2To3Amount:
+          type: string
+        above3Count:
+          type: integer
+          format: int64
+        above3Amount:
+          type: string
+    ResponseMessageDashboardRangeWiseLoanData:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/DashboardRangeWiseLoanData'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardGenderWiseLoanData:
+      type: object
+      properties:
+        maleLoanCount:
+          type: integer
+          format: int64
+        maleLoanAmount:
+          type: string
+        femaleLoanCount:
+          type: integer
+          format: int64
+        femaleLoanAmount:
+          type: string
+        otherLoanCount:
+          type: integer
+          format: int64
+        otherLoanAmount:
+          type: string
+    ResponseMessageDashboardGenderWiseLoanData:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/DashboardGenderWiseLoanData'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardTotalLoanCount:
+      type: object
+      properties:
+        branchLoanCount:
+          type: integer
+          format: int64
+        pacsLoanCount:
+          type: integer
+          format: int64
+    ResponseMessageListDashboardTotalLoanCount:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardTotalLoanCount'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardFarmerTypeWiseLoanData:
+      type: object
+      properties:
+        marginalLoanCount:
+          type: integer
+          format: int64
+        marginalLoanAmount:
+          type: string
+        smallLoanCount:
+          type: integer
+          format: int64
+        smallLoanAmount:
+          type: string
+        otherLoanCount:
+          type: integer
+          format: int64
+        otherLoanAmount:
+          type: string
+    ResponseMessageDashboardFarmerTypeWiseLoanData:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/DashboardFarmerTypeWiseLoanData'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardCategoryWiseLoanData:
+      type: object
+      properties:
+        casteId:
+          type: integer
+          format: int64
+        casteName:
+          type: string
+        totalCount:
+          type: integer
+          format: int64
+        totalAmount:
+          type: string
+    ResponseMessageListDashboardCategoryWiseLoanData:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardCategoryWiseLoanData'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardAverageDaysBetweenLoanStatuses:
+      type: object
+      properties:
+        statusName:
+          type: string
+        totalAverageDays:
+          type: integer
+          format: int32
+        statusId:
+          type: integer
+          format: int32
+    ResponseMessageListDashboardAverageDaysBetweenLoanStatuses:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardAverageDaysBetweenLoanStatuses'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    DashboardCountMapper:
+      type: object
+      properties:
+        statusId:
+          type: integer
+          format: int64
+        statusName:
+          type: string
+        totalCount:
+          type: integer
+          format: int64
+    ResponseMessageListDashboardCountMapper:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardCountMapper'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        header:
+          type: string
+        content:
+          type: string
+        type:
+          type: string
+          enum:
+            - LOAN_OPERATION
+            - FARMER
+            - LOAN
+        link:
+          type: string
+        isRead:
+          type: boolean
+        userId:
+          type: integer
+          format: int64
+        loanNumber:
+          type: string
+        bankMasterId:
+          type: integer
+          format: int64
+        entityLevelId:
+          type: integer
+          format: int64
+        entityLevelName:
+          type: string
+        amount:
+          type: string
+        subFarmerId:
+          type: integer
+          format: int64
+    ResponseMessageNotification:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/Notification'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    MisFilterMapper:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: integer
+          format: int64
+        state:
+          type: string
+        description:
+          type: string
+        bankMasterId:
+          type: integer
+          format: int64
+        bankType:
+          type: string
+        stateMasterId:
+          type: integer
+          format: int64
+        districtMasterId:
+          type: integer
+          format: int64
+        productMasterId:
+          type: integer
+          format: int64
+        loanType:
+          type: string
+        loanStatusMasterId:
+          type: integer
+          format: int64
+        loanStatus:
+          type: string
+        loanMode:
+          type: string
+        landTypeId:
+          type: integer
+          format: int64
+        croppingSeasonId:
+          type: integer
+          format: int64
+        cropTypeId:
+          type: integer
+          format: int64
+        cropName:
+          type: string
+        cropNameId:
+          type: integer
+          format: int64
+        userType:
+          type: string
+        genderId:
+          type: integer
+          format: int64
+        casteId:
+          type: integer
+          format: int64
+        religionId:
+          type: integer
+          format: int64
+        fishFarmingTypeId:
+          type: string
+        animalHusbandryTypeId:
+          type: string
+        loanAmountRange:
+          type: string
+        minimumAmount:
+          type: integer
+          format: int64
+        maximumAmount:
+          type: integer
+          format: int64
+        startDate:
+          type: string
+        endDate:
+          type: string
+        isIndividual:
+          type: boolean
+        associateId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        hierarchyLevel1Id:
+          type: integer
+          format: int64
+        hierarchyLevel2Id:
+          type: integer
+          format: int64
+        hierarchyLevel3Id:
+          type: integer
+          format: int64
+        hierarchyLevel4Id:
+          type: integer
+          format: int64
+        hierarchyLevel5Id:
+          type: integer
+          format: int64
+        hierarchyLevel6Id:
+          type: integer
+          format: int64
+        isSameAsMin:
+          type: boolean
+        gender:
+          type: string
+        religion:
+          type: string
+        bankName:
+          type: string
+        district:
+          type: string
+        croppingSeason:
+          type: string
+        cropType:
+          type: string
+        caste:
+          type: string
+        systemGenerated:
+          type: boolean
+        hierarchyLevel1Name:
+          type: string
+        hierarchyLevel2Name:
+          type: string
+        hierarchyLevel3Name:
+          type: string
+        hierarchyLevel4Name:
+          type: string
+        hierarchyLevel5Name:
+          type: string
+        hierarchyLevel6Name:
+          type: string
+        fishFarmingType:
+          type: string
+        animalHusbandryType:
+          type: string
+        userName:
+          type: string
+    ResponseMessageMisFilterMapper:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/MisFilterMapper'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    ResponseMessageListMisFilter:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MisFilter'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    ResponseMessageSideBarViewResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/SideBarViewResponse'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
+    SideBarViewResponse:
+      type: object
+      properties:
+        viewLoan:
+          type: boolean
+        viewJointApplicant:
+          type: boolean
+        viewLandDetails:
+          type: boolean
+    AssociateMapper:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        associateName:
+          type: string
+        stateMasterId:
+          type: integer
+          format: int64
+        districtMasterId:
+          type: integer
+          format: int64
+    ResponseMessageAssociateMapper:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        key:
+          type: string
+        data:
+          $ref: '#/components/schemas/AssociateMapper'
+        dataList:
+          type: array
+          items:
+            type: object
+        exceptionIdentifier:
+          type: string
